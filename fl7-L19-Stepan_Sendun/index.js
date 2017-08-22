@@ -7,16 +7,16 @@ function getJSON(url) {
                 res.json().then(result => {
                     resolve(result);
                 })
-            } else {
-                reject(new Error(`Response status ${res.status}. ${Error.message}`));
             }
+        }).catch(function(eror){
+            reject(eror);
         })
     })
 
     return promise;
 }
 
-//  invocation example is below
+  // invocation example is below
 
 //var getAstros = getJSON('http://api.open-notify.org/astros.json');
 //console.log(typeof getAstros); // -> “object”
@@ -27,19 +27,9 @@ function getJSON(url) {
 //        console.log(error);
 //    });
 //
-//let script = document.getElementById('script');
-//
-//fetch('?jsonp=parseResponse').then(res => {
-//    console.log(res)
-//})
-//
-//
-//function parseResponse(data) {
-//    console.log(data);
-//}
-
 
 //====================================================================================================
+// second task is below
 
 let archiveScript = document.createElement('script');
 let container = document.getElementById('container');
@@ -83,9 +73,6 @@ function showMarsWeather(event) {
             page++;
             counter = 0;
         }
-
-
-
     }
 
     if (event.target.getAttribute('class') === 'is-hover') {
@@ -120,6 +107,7 @@ function archive(data) {
     }
 }
 
+// generate error message if data wasn't load in 5 seconds
 let timer = setTimeout(function () {
     container.innerHTML = `<p>Sorry, data cannot be loaded</p>
                         <p>Try again later</p>`;
