@@ -8,15 +8,15 @@ function getJSON(url) {
                     resolve(result);
                 })
             }
-        }).catch(eror => {
-            reject(eror);
+        }).catch(error => {
+            reject(error);
         })
     })
 
     return promise;
 }
 
-// invocation example is below
+ //  invocation example is below
 
 //var getAstros = getJSON('http://api.open-notify.org/astros.json');
 //console.log(typeof getAstros); // -> “object”
@@ -26,7 +26,7 @@ function getJSON(url) {
 //    }, function (error) {
 //        console.log(error);
 //    });
-//
+
 
 //====================================================================================================
 // second task is below
