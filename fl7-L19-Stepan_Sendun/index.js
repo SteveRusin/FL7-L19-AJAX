@@ -8,7 +8,7 @@ function getJSON(url) {
                     resolve(result);
                 })
             }
-        }).catch(function(eror){
+        }).catch(eror => {
             reject(eror);
         })
     })
@@ -16,7 +16,7 @@ function getJSON(url) {
     return promise;
 }
 
-  // invocation example is below
+// invocation example is below
 
 //var getAstros = getJSON('http://api.open-notify.org/astros.json');
 //console.log(typeof getAstros); // -> “object”
