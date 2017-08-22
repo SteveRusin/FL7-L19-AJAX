@@ -3,17 +3,16 @@
     padding: 0;
 }
 
+
 body {
     height: 100%;
     width: 100%;
     color: rgba(205, 52, 38, 0.9);
     text-shadow: 0px 0px 1px black;
-}
-
-body {
-    background: url(http://hmp.me/apwk) center center no-repeat;
+    background: url(http://hmp.me/apwk)  no-repeat;
     background-size: cover;
 }
+
 
 #container {
     margin-top: 10%;
