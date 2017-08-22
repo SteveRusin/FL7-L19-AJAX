@@ -41,15 +41,15 @@ function getJSON(url) {
 
 //====================================================================================================
 
+//  Second task - Weather on the Mars is below
+
 let archiveScript = document.createElement('script');
 let container = document.getElementById('container');
 let counter = 0;
 let page = 1;
 
-
 archiveScript.setAttribute("src", 'http://marsweather.ingenology.com/v1/archive/?page=1&format=jsonp&callback=archive');
 document.body.appendChild(archiveScript);
-
 
 function currentTime() {
     var d = new Date(),
@@ -60,7 +60,6 @@ function currentTime() {
         days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     return days[d.getDay()] + ' ' + months[d.getMonth()] + ' ' + d.getDate() + ' ' + d.getFullYear() + ' ' + hours + ':' + minutes + ampm;
 }
-
 
 function showMarsWeather(event) {
     if (event.target.innerHTML.includes('Next')) {
@@ -83,9 +82,6 @@ function showMarsWeather(event) {
             page++;
             counter = 0;
         }
-
-
-
     }
 
     if (event.target.getAttribute('class') === 'is-hover') {
@@ -114,7 +110,6 @@ function archive(data) {
         next.classList.remove('is-hover');
         h1.innerHTML = `The latest data of weather on mars is on ${data.results[counter].terrestrial_date}`;
     }
-
 }
 
 container.addEventListener('click', showMarsWeather);
