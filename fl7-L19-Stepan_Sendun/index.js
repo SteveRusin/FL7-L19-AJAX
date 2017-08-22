@@ -100,21 +100,31 @@ function showMarsWeather(event) {
 
 function archive(data) {
     let next;
+    let prev;
     let h1;
+    clearTimeout(timer);
     container.innerHTML = `<h1>The weather on mars on ${data.results[counter].terrestrial_date}</h1>
                                 <p>MAX ${data.results[counter].max_temp}&deg;C</p>
                                 <p>MIN ${data.results[counter].min_temp}&deg;C</p>
                                 <p>Current Earch Time ${currentTime()}</p>
                                 <span class='is-hover'>&lt;&lt;Prev</span>
-                                <span class='is-hover'>Next&gt;&gt;</span>`
+                                <span class='is-hover'>Next&gt;&gt;</span>`;
     next = document.getElementsByTagName('span')[1];
+    prev = document.getElementsByTagName('span')[0];
     h1 = container.childNodes[0];
-    console.log(h1);
-    if ((counter === 0) && (page === 1)) {
+    if ((counter === 0) && (data.previous === null)) {
         next.classList.remove('is-hover');
         h1.innerHTML = `The latest data of weather on mars is on ${data.results[counter].terrestrial_date}`;
+    } else if ((counter === 9) && (data.next === null)) {
+        prev.classList.remove('is-hover');
     }
-
 }
+
+let timer = setTimeout(function () {
+    container.innerHTML = `<p>Sorry, data cannot be loaded</p>
+                        <p>Try again later</p>`;
+    throw new Error('Cannot Load data');
+}, 5000);
+
 
 container.addEventListener('click', showMarsWeather);
