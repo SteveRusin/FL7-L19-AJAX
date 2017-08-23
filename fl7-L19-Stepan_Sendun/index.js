@@ -41,6 +41,7 @@ function appendScript() {
     container.innerHTML = '<div class="loader"></div>';
     script = document.createElement('script');
     script.setAttribute("src", `http://marsweather.ingenology.com/v1/archive/?page=${page}&format=jsonp&callback=archive`);
+    script.setAttribute("id", `script`);
     document.body.appendChild(script);
 }
 
@@ -90,11 +91,10 @@ function prevData() {
 function showMarsWeather(event) {
     let next = document.getElementById('next');
     let prev = document.getElementById('prev');
-    let deleteScript = document.getElementsByTagName('script')[1];
-    let scriptPage = deleteScript.getAttribute('src');
+    let deleteScript = document.getElementById('script');
+    let scriptPage = deleteScript.getAttribute('src').match(/([^\?]*)\?page=(\d*)/)[2];
     let h1;
 
-    console.log(scriptPage)
     if (event.target === next) {
         nextData();
         showInfo();
