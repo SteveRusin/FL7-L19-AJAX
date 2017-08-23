@@ -13,6 +13,9 @@
     padding: 0;
 }
 
+*::selection {
+    color: orange;
+}
 
 body {
     height: 100%;
@@ -70,22 +73,5 @@ span {
     margin: auto auto;
 }
 
-#load-more {
-    font-size: 1em;
-    font-weight: bold;
-    color: rgba(50, 0, 0, 0.9);
-    display: block;
-    margin: 50px auto;
-    background-color: rgba(205, 52, 38, 0.9);
-    padding: 15px;
-    outline: none;
-    border: 2px solid black;
-    cursor: pointer;
-    transition: 0.4s;
-}
-
-#load-more:hover {
-    border: 2px solid transparent;
-}
 
 
