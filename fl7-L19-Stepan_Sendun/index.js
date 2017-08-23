@@ -1,22 +1,20 @@
 // first task =======================================================================================
 
 function getJSON(url) {
-    let promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fetch(url).then(res => {
-            if (res.status === 200) {
+            if (res.ok) {
                 res.json().then(result => {
                     resolve(result);
                 })
             }
-        }).catch(error => {
-            reject(error);
+        }).catch(err => {
+            reject(err);
         })
     })
-
-    return promise;
 }
 
- //  invocation example is below
+//  invocation example is below
 
 //var getAstros = getJSON('http://api.open-notify.org/astros.json');
 //console.log(typeof getAstros); // -> “object”
@@ -35,6 +33,7 @@ let archiveScript = document.createElement('script');
 let container = document.getElementById('container');
 let counter = 0;
 let page = 1;
+let timer;
 
 
 archiveScript.setAttribute("src", 'http://marsweather.ingenology.com/v1/archive/?page=1&format=jsonp&callback=archive');
@@ -42,7 +41,7 @@ document.body.appendChild(archiveScript);
 
 
 function currentTime() {
-    var d = new Date(),
+    let d = new Date(),
         minutes = d.getMinutes().toString().length == 1 ? '0' + d.getMinutes() : d.getMinutes(),
         hours = d.getHours().toString().length == 1 ? '0' + d.getHours() : d.getHours(),
         ampm = d.getHours() >= 12 ? 'pm' : 'am',
@@ -53,6 +52,8 @@ function currentTime() {
 
 
 function showMarsWeather(event) {
+    let deleteScript;
+    let script;
     if (event.target.innerHTML.includes('Next')) {
 
         if ((page === 1) && (counter === 0)) {
@@ -77,12 +78,14 @@ function showMarsWeather(event) {
 
     if (event.target.getAttribute('class') === 'is-hover') {
         container.innerHTML = '<div class="loader"></div>';
-        let deleteScript = document.body.getElementsByTagName('script')[1];
+        deleteScript = document.body.getElementsByTagName('script')[1];
         document.body.removeChild(deleteScript);
-        let script = document.createElement('script');
+        script = document.createElement('script');
         script.setAttribute("src", `http://marsweather.ingenology.com/v1/archive/?page=${page}&format=jsonp&callback=archive`);
         document.body.appendChild(script);
     }
+
+    err();
 }
 
 function archive(data) {
@@ -108,11 +111,15 @@ function archive(data) {
 }
 
 // generate error message if data wasn't load in 5 seconds
-let timer = setTimeout(function () {
-    container.innerHTML = `<p>Sorry, data cannot be loaded</p>
-                        <p>Try again later</p>`;
-    throw new Error('Cannot Load data');
-}, 5000);
 
+function err() {
+    timer = setTimeout(function () {
+        container.innerHTML = `<p>Sorry, data cannot be loaded</p>
+                               <p>Try again later</p>`;
+        throw new Error('Cannot Load data');
+    }, 5000);
+}
+
+err();
 
 container.addEventListener('click', showMarsWeather);
