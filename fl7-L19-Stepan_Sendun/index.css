@@ -1,3 +1,13 @@
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -60,11 +70,22 @@ span {
     margin: auto auto;
 }
 
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+#load-more {
+    font-size: 1em;
+    font-weight: bold;
+    color: rgba(50, 0, 0, 0.9);
+    display: block;
+    margin: 50px auto;
+    background-color: rgba(205, 52, 38, 0.9);
+    padding: 15px;
+    outline: none;
+    border: 2px solid black;
+    cursor: pointer;
+    transition: 0.4s;
 }
+
+#load-more:hover {
+    border: 2px solid transparent;
+}
+
+
