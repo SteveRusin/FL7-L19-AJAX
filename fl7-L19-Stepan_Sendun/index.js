@@ -111,9 +111,10 @@ function showMarsWeather(event) {
 }
 
 function archive(data) {
+    let dataInfo;
     clearTimeout(timer);
     data.results.forEach(function (el, i) {
-        let dataInfo = {};
+         dataInfo = {};
         if (el.max_temp === null) {
             el.max_temp = 'No data';
         }
