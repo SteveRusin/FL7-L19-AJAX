@@ -32,8 +32,7 @@ function getJSON(url) {
 let container = document.getElementById('container');
 let counter = 0;
 let page = 1;
-let dataArr;
-let dataInfo = {};
+let dataArr = [];
 let timer;
 
 function appendScript() {
@@ -59,33 +58,33 @@ function showInfo() {
     next = document.getElementById('next');
     prev = document.getElementById('prev');
     h1 = container.childNodes[0];
-    if ((counter === 0) && (dataInfo.previous === null)) {
+    if (dataArr[counter].previous === null) {
         next.classList.remove('is-hover');
         h1.innerHTML = `The latest data of weather on mars is on ${dataArr[counter].terrestrial_date}`;
-    } else if ((counter === 9) && (dataInfo.next === null)) {
+    } else if (dataArr[counter].next === null) {
         prev.classList.remove('is-hover');
     }
 }
 
 function nextData() {
-        if ((page === 1) && (counter === 0)) {
-            counter = 0;
-        } else {
-            counter--;
-        }
-
-        if ((page > 1) && (counter === (-1))) {
-            page--;
-            counter = 9;
-        }
+    if (counter === 0) {
+        counter = 0;
+    } else {
+        counter--;
+    }
 }
 
 function prevData() {
-    counter++;
-    if (counter > 9) {
-        page++;
-        counter = 0;
+    if (dataArr[counter].next !== null) {
+        counter++;
     }
+
+    if ((counter % 10 === 0) && (counter === dataArr.length) && (dataArr[dataArr.length - 1].next !== null)) {
+        page++;
+    } else {
+        showInfo();
+    }
+
 }
 
 function showMarsWeather(event) {
@@ -100,64 +99,52 @@ function showMarsWeather(event) {
         showInfo();
     } else if (event.target === prev) {
         prevData();
-        showInfo();
+
     }
 
     if ((event.target === next) || event.target === prev) {
-        if (parseInt(scriptPage, 10) !== page) {
-            deleteScript = document.body.getElementsByTagName('script')[1];
+        if (parseInt(scriptPage, 10) < page) {
             document.body.removeChild(deleteScript);
             appendScript();
         }
-
     }
-
 }
 
 function archive(data) {
-    let next;
-    let prev;
-    let h1;
-    
     clearTimeout(timer);
-    data.results.forEach(function (el) {
+    data.results.forEach(function (el, i) {
+        let dataInfo = {};
+        if (el.max_temp === null) {
+            el.max_temp = 'No data';
+        }
+        if (el.min_temp === null) {
+            el.min_temp = 'No data';
+        }
         if (el.wind_speed === null) {
             el.wind_speed = 'No data';
         }
-        if (el.wind_direction === '--') {
+        if ((el.wind_direction === '--') || (el.wind_direction === null)) {
             el.wind_direction = 'No data';
         }
+        Object.assign(dataInfo, el);
+        if (i === 9) {
+            dataInfo.next = data.next;
+        } else if (i === 0) {
+            dataInfo.previous = data.previous;
+        }
+        dataArr.push(dataInfo);
     })
 
-    dataArr = data.results.map(el => Object.assign({}, el));
-    Object.assign(dataInfo, data);
-
-    container.innerHTML = `<h1>The weather on mars on ${data.results[counter].terrestrial_date}</h1>
-                                <p>MAX: ${data.results[counter].max_temp}&deg;C</p>
-                                <p>MIN: ${data.results[counter].min_temp}&deg;C</p>
-                                <p>Wind Power: ${data.results[counter].wind_speed}</p>
-                                <p>Wind Direction: ${data.results[counter].wind_direction}</p>
-                                <span id='prev' class='is-hover'>&lt;&lt;Prev</span>
-                                <span id='next'class='is-hover'>Next&gt;&gt;</span>`;
-
-    next = document.getElementById('next');
-    prev = document.getElementById('prev');
-    h1 = container.childNodes[0];
-    
-    if ((counter === 0) && (data.previous === null)) {
-        next.classList.remove('is-hover');
-        h1.innerHTML = `The latest data of weather on mars is on ${data.results[counter].terrestrial_date}`;
-    } else if ((counter === 9) && (data.next === null)) {
-        prev.classList.remove('is-hover');
-    }
+    showInfo();
 }
 
 function error() {
     timer = setTimeout(function () {
-        container.innerHTML = `<p>Sorry, data cannot be loaded</p>
+        container.innerHTML = `<h1>Timeout</h1>
+                               <p>Sorry, data cannot be loaded</p>
                                <p>Try again later</p>`;
-        throw new Error('Cannot Load data');
-    }, 5000);
+        throw new Error('Timeout');
+    }, 10000);
 }
 
 
