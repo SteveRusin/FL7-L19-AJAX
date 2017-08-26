@@ -17,20 +17,19 @@
 }
 
 body {
-    height: 100%;
-}
-
-#container {
-    text-align: center;
-    height: 80vh;
-    color: rgba(205, 52, 38, 0.9);
-    text-shadow: 0px 0px 1px black;
+    height: 100vh;
     background: url(http://hmp.me/apwk) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    padding: 10vh 0;
+}
+
+#container {
+    text-align: center;
+    color: rgba(205, 52, 38, 0.9);
+    text-shadow: 0px 0px 1px black;
+    padding: 10vh 0 0;
 }
 
 h1,
